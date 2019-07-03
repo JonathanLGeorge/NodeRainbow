@@ -1,0 +1,16 @@
+to launch local host go to terminal and navigate to directory
+then type: node idex.js to host on localhost:####
+open up web browser :)
+
+
+whats going on under the hood:
+
+we have file index.js... its basically the server
+what does it do? hosts static files (index.html)
+its listening for computers to request these files and serves them up
+index.js can also be responsibile to save to data base
+authentication
+
+
+something we can only do on client is geo locate so we need to write that
+code on index.html using javascript
