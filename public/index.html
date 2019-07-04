@@ -4,36 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
+   
     <title>Hello</title>
   </head>
+  <style>
+
+  </style>
   <body>
-    <script>
+
+        <h1>Data</h1>
+
+        <p>
+            latitude: <span id="latitude"></span>&deg;<br>
+            longitude: <span id="longitude"></span>&deg;
+        </p>
+        
+        <button id="submit">submit</button>
+
+    <!-----------------geo locate--------------------------------->
+    <script> 
         /*
         example found on 
         https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
         */
-        if('geolocation' in navigator){
-            console.log('geolocation avalible');
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+
+         /*Once this runs, user will need to Allow the geo locate
+        probably getting info from GPS in device or IP adress of network*/
+        let lat, lon;
+        const button = document.getElementById('submit');
+        button.addEventListener('click', async event => {
+        const data = { lat, lon };
+        const options = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        };
+        const response = await fetch('/api', options);
+        const json = await response.json();
+        console.log(json);      
+        //fetch('/api', options).then(repsonse => {
+          //  console.log(response)}
+        });
+            
+
+        if ('geolocation' in navigator) {
+            console.log('geolocation available');
+            navigator.geolocation.getCurrentPosition(async position => {
+                lat = position.coords.latitude;
+                lon = position.coords.longitude;
                 document.getElementById('latitude').textContent = lat;
                 document.getElementById('longitude').textContent = lon;
                 
-                console.log(position); //to look at everything
+                //console.log(position); //to look at everything
                 //console.log(position.coords.latitude);
                 //console.log(position.coords.longitude);
-                /*Once this runs, user will need to Allow the geo locate
-                probably getting info from GPS in device or IP adress of network*/
             });
         } else {
             console.log('geolocation NOT avalible');
         }    
     </script>
-    <h1>Data</h1>
 
-    <p>latitude: <span> id="latitude"</span>&deg<br>
-    latitude: <span> id="latitude"</span>&deg</p>
   </body>
 </html>

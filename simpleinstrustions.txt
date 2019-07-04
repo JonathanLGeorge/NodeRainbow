@@ -14,3 +14,13 @@ authentication
 
 something we can only do on client is geo locate so we need to write that
 code on index.html using javascript
+
+web api Navigator for client side
+
+
+
+Routing:
+
+Json Parsing:
+
+Post request featch() 
