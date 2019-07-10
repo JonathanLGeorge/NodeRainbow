@@ -4,25 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-   
-    <title>Hello</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Pic + location</title>
   </head>
   <style>
 
   </style>
   <body>
 
-        <h1>Data</h1>
-
+        <h1>Location</h1>
+        <div><a href="/">enter</a> | <a href="/logs">list</a></div>
         <p>
             latitude: <span id="latitude"></span>&deg;<br>
             longitude: <span id="longitude"></span>&deg;
         </p>
         
+        <label for="mood">enter your mood</label>
+        <input id="mood" value="rainbow" />
         <button id="submit">submit</button>
 
     <!-----------------geo locate--------------------------------->
+    <script src="picANDgeo.js"></script>
     <script> 
+    
         /*
         example found on 
         https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API
@@ -30,7 +36,8 @@
 
          /*Once this runs, user will need to Allow the geo locate
         probably getting info from GPS in device or IP adress of network*/
-        let lat, lon;
+        
+        /*let lat, lon;
         const button = document.getElementById('submit');
         button.addEventListener('click', async event => {
         const data = { lat, lon };
@@ -64,7 +71,8 @@
         } else {
             console.log('geolocation NOT avalible');
         }    
+        */
     </script>
-
+    
   </body>
 </html>
