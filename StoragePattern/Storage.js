@@ -6,7 +6,7 @@ class Storage {
         this.deliveryTime = deliveryTime;
         this.next = null;
     }
-
+    //find the items... remeber we have array of items 
     lookInLocalInventory(itemName) {
         var index = this.inventory.map(item => item.name).indexOf(itemName);
         return this.inventory[index];

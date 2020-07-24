@@ -24,7 +24,7 @@ class CreateCommand {
     get name() {
         return `create ${this.fileName}`;
     }
-
+    //f => f is just a place holder function... will update later
     execute() {
         writeFile(this.fullPath, this.body, f => f);
     }
