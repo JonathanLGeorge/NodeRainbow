@@ -47,7 +47,7 @@ var beep = () => process.stdout.write("\x07");
 
 
 //we are not goingto handle reject cause we will set a time out 
-var delay = (seconds) => new Promise((resolve) => {
+var delay = (seconds) => new Promise((resolves) => {
     setTimeout(resolves, seconds*1000);
 })
 
@@ -65,14 +65,14 @@ const doStuffSequentially = () => Promise.resolve()
   .then(() => 'waiting')
   .then(console.log)
   .then(() => delay(2))
-  .then(() => writeFile('file.txt', 'Sample File...'))
+  .then(() => writeFile('file2.txt', 'Sample File...'))
   .then(beep)
-  .then(() => 'file.txt created')
+  .then(() => 'file2.txt created')
   .then(console.log)
   .then(() => delay(3))
-  .then(() => unlink('file.txt'))
+  .then(() => unlink('file2.txt'))
   .then(beep)
-  .then(() => 'file.txt removed')
+  .then(() => 'file2.txt removed')
   .then(console.log)
   .catch(console.error);
 
