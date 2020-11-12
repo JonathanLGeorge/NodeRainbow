@@ -1,0 +1,247 @@
+Creational Patterns
+	-Abstract Factory
+		-
+	-Builder
+	-Factory Method
+	-Prototype
+	-Singleton
+
+Structural Patterns
+	-Adapter
+	-Bridge
+	-Composite
+	-Decorator
+	-Facade
+	-Flyweight
+	-Proxy
+
+Behavioral Patterns
+	-Chain of Resposibility
+	-state
+	-command
+	-Strategy
+	-iterator
+	-mediator
+	-visitor
+	-memento
+	-observer
+
+
+
+Concrete Implementaion 
+	//when we uses the new operator we are forcing concrete impementation 
+	//we can use an interface like Duck as the type of the variable to program to the interface
+	//but ultimitly we have to creat a concreet type like MallardDuck, to create a Duck object somewhere in our code
+	//This code we are making run time decision about which class to instantiate. 
+	//If we need new duck types or requirments change. We are going to have to change or update the code
+	//This violates the open close principle 
+	//We might alsoend up writing this same code somewhere in the application
+	// so lets look at what varies and encapsilate it!
+
+//bad example of code not using factor 
+Duck duck;
+if (picnic) {
+	duck = new MallardDuck();
+} else if (hunting) {
+	duck = new DecoyDuck();
+} else if (inBathTub) {
+	duck = new RubberDuck();
+}
+
+simple factory pattern map
+
+[client]------->[simpleFactory]---------[Product]
+		{CreateProduct()}	{methodA(), methodB()}
+
+						^
+						|
+					[ConcreteProduct]
+					{MethodA(), MethodB()}
+
+in this map the Duck is the product
+The product interface is the product super class
+MallardDuck, RubberDuck... are the ConcreteProducts
+
+================================================================================================================
+
+
+Factory Method Pattern
+-to create Pizza map
+
+formal definition
+	Define an interface for creating an object, but let
+	the subclass decide which to instantiate.
+	Factory method lets a class defer instantiation to subclasse
+
+
+[client]------->[PizzaFactory]------------------->[Pizza]
+		{orderPizza()}			{preparePizza()}
+		{createPizza()}			{bakePizza()}
+			^				^
+			|				|
+	[NYFactory] [ChicagoFactory]		[NYStylePizzas] [ChicagoStylePizza]
+	{createPizza()} {createPizza()}		{prepearePizza()} {preparePizza()}
+						{bakePizz()}	  {bakepizza()}
+
+we can see that there is a PizzaFactory
+but in this example we have two different concrete factories for chicago and NY
+they both make Pizza but have different concrete products 
+They use the common pizza interface
+=========================================================================================================
+A Factory for HTML Elements
+
+[browser]------>[Document]------------------------------------->[HTMLElement]
+		{HTMLElement createElement(tagName)}		{click()}
+
+									^
+									|
+							[HTMLDivElement]  [HTMLButtonElement]
+
+let divEl = document.createElement("div")
+let buttonEl = document.createElement("button")
+
+//the Document class has a createElement factory method that creates a tagname
+//ou can call this method in the browswer and get back the abstract HTMLElement class
+//that element implements a click method so we can use click events
+===============================================================================================================
+
+Abstract Factory
+	-provide an interface for creating familes of related or dependent objects without 
+	specifying their concret classes
+we are not creating one product we are creating a family of products
+when would we use this?
+	imagine you have a system that supports users with different roles
+	the users role determines the interfaces they will use to interact with the system
+
+user:forcaster ------> family of products for this role
+			-VIEW, -FORMS, -FUNCTIONS -ect...
+
+we can use the adstract factory pattern in a way so that the main part of the system 
+is independent of the conrete products we create, and ensures the concrete products are created for the role
+and that we can exchange the products easily ifthe user changes roles
+
+
+
+client -------> UserRole---------------->Role1 0r Role2--------(if) role1 ------(if) role2 
+|		-operation()		-createView()		-Role1View	-Role2View
+|		-createView()		-createFunctions()	-Role1Functions	-Role2Functions
+|		-createFunctions()					|
+V									V
+view <----------------------------------------------------------------Role1&2view  
+
+
+====================================================================================================================
+
+Builer
+is concered how to build individual object 
+we want the client to build different representaions of the same kind of object
+
+say we wnt to build a car with differetn options
+	wed like to create objects of the same kinda
+	wed like the client to have flexibility in how we create the cars
+	the process of building a car is independent of the parts that make up the car and how they are addembled
+	theconstuction process allows for differnt kinds of cars... van suv 4 door 2 door
+
+
+Generic Builder pattern
+
+[Director]------------------------------->[builder]
+{consruct()}				{buildPart()}
+	|				|
+	|				|
+foreach (object in structure){		[ConcreteBuilder] -------------[Product]
+	builder.buildPart()		{buildPart()}
+					{build()}
+} 
+
+in our car example we would have 
+an abstract CarBuilder that has an API for the builder to the carDirector 
+
+concrete builders Sedan and SUV that create a car object
+
+the director has options for the car
+
+
+
+CarDirector
+-constructor
+	-Car car = builder.addFrontDoor()
+		.addBackDoor()
+		.addMoonRoof()
+		.build();
+
+CarBuilder
+-addFrontDoor()
+-addBackDoor()
+addMoonRoof()
+
+concrete classes sedan and SUV
+-addFrontDoor()
+-addBackDoor()
+-addMoonRoof()
+-build()
+
+
+a builder API must be general enough to suport variations in the concrete builders and products the create
+
+
+example of a String builder
+
+[Director]--------------------------------------------> [builder]  <--------------------[StringBuilder1], [StringBuilder#...]
+{constructor}						{append()}			{append()}
+|							{insert()}			{insert()}
+|											{toString()}
+stringBuilder.append("Test")
+stringBuilder.append(" ")
+stringBuilder.append("Builder)
+stringBuilder.insert(0, "==")
+stringBuilder.append("==")
+String s = stringBuilder.toString()	
+===================================================================================================================
+
+Prototype Pattern
+-Specify the kinds of objects to create using a prototypical instance, and create new object by copying this prototype
+
+when we copy an existing ibject, we get the complex setup for free
+we dont need to know the concrete class of the object we are creating 
+the client in independent of how an object is created
+
+Client ------------------------------> prototype <--------------ConcreatPrototype1, 2,3, ect....
+operation()				clone()			clone()
+|								|
+prototype p = prototype.clone() 				return copy of this
+
+
+Benifits of prototype
+
+-Encapsulates object creation inside a prototype instance object
+-Client depends on the prototype abstraction and not the concrete typesof the objects created from the prototype, 
+or the details of how new objects of that type are creates
+-javas cloneable interface allows objects to clone themseleves with the clone() method
+-with javaScript object.create() and object.assign(), we can create and copy objects
+===================================================================================================================
+Signleton Pattern 
+Ensuree a class only has one insance, and provide a global point of access to it
+-we need to ensure only one instance of a class exists
+-make sure its easy to access from well know point. will likely be a global variable, ormade from an instance made from a class that all other classes can access
+
+Singleton
+static uniquInstance---------------------uniqueInstance = new Singleton();
+static getInstance()------------------return uniqueInstance;
+private Singleton()
+
+The idea is to have a static unique Instance that will hold the one and only instance of the singleton Class
+in Java this is whats called a class variable 
+the variable only exists in the class, not in instances of the class
+notice we have a private constuctor for singelton
+that means the only class that can call the private constructor to make an instance of this class is the signleton itself
+we can initialize the unique instance variable thats going to hold the one and only instance of singleton by-
+assigning it a new singleton, we can do this because we are calling that private constructor within the singletons class.
+-so we created a signle instance of singleton but we need to make sre this is accessable to clients. 
+need a global access point to the singleton 
+this is where the get instance method comes in. it will return the unique instance that we created
+this is a static method accociated with the class itself so it can access and return the static unique instance that we created
+
+the implementation of singleton is language depended
+
+
