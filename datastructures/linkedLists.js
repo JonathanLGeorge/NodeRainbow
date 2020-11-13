@@ -123,6 +123,51 @@ class DoublyLinkedList {
     return removedTail.data;
   }
 
+  // Create your .removeByData() method below:
+  removeByData(data) {
+    let nodeToRemove;
+    let currentNode = this.head;
+    while (currentNode !== null) {
+      /*
+       checks if currentNode‘s data matches data. If it does, that means we have found the matching node. 
+       */
+      if (currentNode.data === data) {
+        nodeToRemove = currentNode;
+        break;
+      }
+      //updating currentNode to be its next node.
+      //This is how we will iterate through the list as we look for the matching node.
+      currentNode = currentNode.getNextNode();
+    }
+
+    /*
+     check if nodeToRemove has any value. If it doesn’t, that means there was no matching node in the list, so return null. 
+     */
+    if (!nodeToRemove) {
+      return null;
+    }
+    /*
+     check if nodeToRemove is the list’s head. If so, call .removeHead().
+     */
+    if (nodeToRemove === this.head) {
+      this.removeHead();
+      //else if nodeToRemove is the list’s tail, call .removeTail().
+    } else if (nodeToRemove === this.tail) {
+      this.removeTail();
+      //else we know that the node is somewhere
+      //in the middle of the list
+      //er need to reset the pointers to remove it
+    } else {
+      //set equal to nodeToRemove‘s next node
+      const nextNode = nodeToRemove.getNextNode();
+      // set equal to nodeToRemove‘s previous node
+      const previousNode = nodeToRemove.getPreviousNode();
+      nextNode.setPreviousNode(previousNode);
+      previousNode.setNextNode(nextNode);
+    }
+    return nodeToRemove;
+  }
+
   printList() {
     let currentNode = this.head;
     let output = "<head> ";
@@ -136,3 +181,26 @@ class DoublyLinkedList {
 }
 
 module.exports = DoublyLinkedList;
+
+/**
+ * const DoublyLinkedList = require('./DoublyLinkedList.js');
+
+const subway = new DoublyLinkedList();
+
+subway.addToHead('TimesSquare');
+subway.addToHead('GrandCentral');
+subway.addToHead('CentralPark');
+subway.printList();
+
+subway.addToTail('PennStation');
+subway.addToTail('WallStreet');
+subway.addToTail('BrooklynBridge');
+subway.printList();
+
+subway.removeHead();
+subway.removeTail();
+subway.printList();
+
+subway.removeByData('TimesSquare');
+subway.printList();
+ */
